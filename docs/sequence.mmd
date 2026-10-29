@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant P as Producer
+    participant R as Redis
+    participant W1 as Worker 1
+    participant W2 as Worker 2
+    participant S as Status
+    P->>R: LPUSH task 1, task 2, task 3
+    W1->>R: BRPOP pending
+    R-->>W1: task 1
+    W2->>R: BRPOP pending
+    R-->>W2: task 2
+    W1->>W1: Compute square
+    W2->>W2: Compute square
+    W1->>R: HSET result 1
+    W2->>R: HSET result 2
+    S->>R: HVALS results
+    R-->>S: Completed tasks and worker IDs

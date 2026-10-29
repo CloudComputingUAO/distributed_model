@@ -1,0 +1,9 @@
+flowchart TD
+    P[Producer] -->|LPUSH tasks| R[(Redis pending queue)]
+    R -->|BRPOP one task| W1[Worker 1]
+    R -->|BRPOP one task| W2[Worker 2]
+    R -->|BRPOP one task| W3[Worker 3]
+    W1 -->|HSET result| O[(Redis results)]
+    W2 -->|HSET result| O
+    W3 -->|HSET result| O
+    O --> S[Status command]
